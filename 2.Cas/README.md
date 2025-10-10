@@ -1,20 +1,3 @@
-node-homework/
-│
-├── server1/
-│ ├── server.js
-│ ├── routes.js
-│ ├── data.js
-│
-├── server2/
-│ ├── server.js
-│ ├── routes.js
-│ ├── data.js
-│
-└── server3/
-├── server.js
-├── routes.js
-├── data.js
-
 ### Zadatak
 # Server 1 – Rad sa os modulom, ima 3 rute:
 
