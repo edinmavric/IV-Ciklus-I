@@ -130,11 +130,10 @@ if (req.query.notBeograd === 'true')
 ```
 
 12. Kombinacija više uslova
-    GET /students?city=Beograd&minAge=20&maxAge=25
-    Beograd + 20 ≤ age ≤ 25
+    GET /students?minAge=20&maxAge=25
+    20 ≤ age ≤ 25
 
 ```js
-if (req.query.city) filter.city = req.query.city;
 if (req.query.minAge || req.query.maxAge) {
   filter.age = {};
   if (req.query.minAge) filter.age.$gte = Number(req.query.minAge);
