@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registracija korisnika</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f6f6f6;
+        padding: 40px;
+      }
+      form {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+      }
+      .msg {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Registracija korisnika</h2>
+    <form id="registerForm">
+      <input type="text" id="name" placeholder="Ime" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Lozinka" required />
+      <select id="role">
+        <option value="student">Student</option>
+        <option value="professor">Profesor</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit">Registruj se</button>
+    </form>
+
+    <div id="message" class="msg"></div>
+
+    <script>
+      const form = document.getElementById('registerForm');
+      const message = document.getElementById('message');
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        message.textContent = '';
+
+        const data = {
+          name: form.name.value,
+          email: form.email.value,
+          password: form.password.value,
+          role: form.role.value,
+        };
+
+        try {
+          const res = await fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          const result = await res.json();
+
+          if (res.ok) {
+            message.textContent = '✅ Korisnik uspešno registrovan!';
+            message.className = 'msg success';
+            form.reset();
+          } else {
+            message.textContent = '❌ Greška: ' + result.error;
+            message.className = 'msg error';
+          }
+        } catch (err) {
+          message.textContent = '⚠️ Server nije dostupan.';
+          message.className = 'msg error';
+        }
+      });
+    </script>
+  </body>
+</html>
