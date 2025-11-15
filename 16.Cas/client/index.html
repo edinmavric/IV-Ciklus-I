@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login korisnika</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f6f6f6;
+        padding: 40px;
+      }
+      form {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+      }
+      .msg {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      #profileBox {
+        margin-top: 30px;
+        padding: 20px;
+        background: white;
+        width: 300px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Login korisnika</h2>
+
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Lozinka" required />
+      <button type="submit">Uloguj se</button>
+    </form>
+
+    <div id="message" class="msg"></div>
+
+    <div id="profileBox" style="display:none;">
+      <h3>📌 Profil korisnika</h3>
+      <pre id="profileData" style="white-space: pre-wrap;"></pre>
+    </div>
+
+    <script>
+      const form = document.getElementById('loginForm');
+      const message = document.getElementById('message');
+      const profileBox = document.getElementById('profileBox');
+      const profileData = document.getElementById('profileData');
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        message.textContent = '';
+
+        const data = {
+          email: form.email.value,
+          password: form.password.value
+        };
+
+        try {
+          const res = await fetch('http://192.168.1.82:3000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          const result = await res.json();
+
+          if (!res.ok) {
+            message.textContent = '❌ Greška: ' + (result.message || result.error);
+            message.className = 'msg error';
+            return;
+          }
+
+          // LOGIN USPESAN
+          message.textContent = '✅ Ulogovani ste!';
+          message.className = 'msg success';
+
+          const token = result.token;
+
+          // SADA POZIVAMO PROFILE RUTU
+          const profileRes = await fetch('http://192.168.1.82:3000/api/profile', {
+            headers: {
+              Authorization: 'Bearer ' + token
+            }
+          });
+
+          const profile = await profileRes.json();
+
+          if (profileRes.ok) {
+            profileBox.style.display = 'block';
+            profileData.textContent = JSON.stringify(profile.user, null, 2);
+          } else {
+            profileData.textContent = 'Nije moguće učitati profil.';
+          }
+
+          form.reset();
+
+        } catch (err) {
+          message.textContent = '⚠️ Server nije dostupan.';
+          message.className = 'msg error';
+        }
+      });
+    </script>
+  </body>
+</html>
