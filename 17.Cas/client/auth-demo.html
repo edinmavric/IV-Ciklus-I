@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auth Demo – JWT + Refresh</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f6f6f6;
+      padding: 40px;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    form, .box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 340px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fcc;
+    }
+    .msg {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    #profileData, #adminResult {
+      white-space: pre-wrap;
+      background: #f2f2f2;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>JWT Autentikacija – Demo</h2>
+
+  <!-- LOGIN -->
+  <form id="loginForm">
+    <h3>Login</h3>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Lozinka" required />
+    <button type="submit">Uloguj se</button>
+    <div id="message" class="msg"></div>
+  </form>
+
+  <!-- PROFILE -->
+  <div id="profileBox" class="box" style="display:none;">
+    <h3>Profil korisnika</h3>
+    <div id="profileData"></div>
+    <button id="refreshBtn" style="margin-top:10px;">Refresh Access Token</button>
+    <button id="logoutBtn" style="margin-top:10px; background:#dc3545">Logout</button>
+  </div>
+
+  <!-- ADMIN ACTIONS -->
+  <div id="adminBox" class="box" style="display:none;">
+    <h3>Admin alat</h3>
+
+    <input type="text" id="deleteId" placeholder="ID korisnika za brisanje" />
+    <button id="deleteUserBtn" style="background:#ff4444">Obriši korisnika</button>
+
+    <div id="adminResult"></div>
+  </div>
+
+
+  <script>
+    const API = "http://localhost:3000"; // promeni IP!
+
+    let accessToken = null;
+    let refreshToken = null;
+    let currentUser = null;
+
+    const loginForm = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+    const profileBox = document.getElementById("profileBox");
+    const profileData = document.getElementById("profileData");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const adminBox = document.getElementById("adminBox");
+    const deleteUserBtn = document.getElementById("deleteUserBtn");
+    const adminResult = document.getElementById("adminResult");
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      message.textContent = "";
+
+      try {
+        const res = await fetch(`${API}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          message.textContent = data.message || data.error;
+          message.className = "msg error";
+          return;
+        }
+
+        // Tokens i user
+        accessToken = data.accessToken;
+        refreshToken = data.refreshToken;
+        currentUser = data.user;
+
+        message.textContent = "Uspesno logovanje!";
+        message.className = "msg success";
+
+        // Učitaj profil
+        loadProfile();
+
+        // Ako je admin → prikaži admin box
+        if (currentUser.role === "admin") {
+          adminBox.style.display = "block";
+        }
+
+      } catch (err) {
+        message.textContent = "Server nije dostupan.";
+        message.className = "msg error";
+      }
+    });
+
+
+    // ==========================================
+    // UČITAVANJE PROFILA
+    // ==========================================
+    async function loadProfile() {
+      profileBox.style.display = "block";
+
+      const res = await fetch(`${API}/users/${currentUser.id}`, {
+        headers: { Authorization: "Bearer " + accessToken }
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        profileData.textContent = JSON.stringify(data, null, 2);
+      } else {
+        profileData.textContent = "Ne može učitati profil.";
+      }
+    }
+
+
+    // ==========================================
+    // REFRESH TOKEN
+    // ==========================================
+    refreshBtn.addEventListener("click", async () => {
+      const res = await fetch(`${API}/auth/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: refreshToken })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        accessToken = data.accessToken;
+        refreshToken = data.refreshToken;
+
+        alert("Novi access token generisan!");
+      } else {
+        alert("Refresh neuspešan!");
+      }
+    });
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+    logoutBtn.addEventListener("click", async () => {
+      await fetch(`${API}/auth/logout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: refreshToken })
+      });
+
+      accessToken = null;
+      refreshToken = null;
+      currentUser = null;
+
+      profileBox.style.display = "none";
+      adminBox.style.display = "none";
+      message.textContent = "Izlogovani ste!";
+      message.className = "msg success";
+
+      loginForm.reset();
+    });
+
+
+    // ==========================================
+    // ADMIN: BRISANJE USERA
+    // ==========================================
+    deleteUserBtn.addEventListener("click", async () => {
+      const id = document.getElementById("deleteId").value;
+
+      if (!id) {
+        adminResult.textContent = "Unesite ID korisnika!";
+        adminResult.className = "msg error";
+        return;
+      }
+
+      const res = await fetch(`${API}/users/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: "Bearer " + accessToken }
+      });
+
+      const data = await res.json();
+
+      adminResult.textContent = JSON.stringify(data, null, 2);
+      adminResult.className = "msg success";
+    });
+  </script>
+</body>
+</html>
