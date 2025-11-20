@@ -1,0 +1,1 @@
+Rok za projekat je Cetvrtak, Novembar 27. 2025. na casu mora biti predat projekat i prezentacija.
