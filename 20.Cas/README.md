@@ -1,0 +1,1 @@
+Rad sa projektima, vezba i prezentovanje, menjanje koda izmedju polaznika.
