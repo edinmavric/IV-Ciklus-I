@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════════
+   APP.CSS - Globalne stilove za aplikaciju
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Osnovni stilovi za root - osigurava da layout radi pravilno */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a202c;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tab button hover efekti - override inline stilova */
+button.tab-button:hover {
+  color: #fff !important;
+  background-color: #2d3748 !important;
+}
+
+button.tab-button:active {
+  transform: scale(0.98);
+}
+
+/* Osigurava da su tab button-i uvek vidljivi */
+button.tab-button {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex-shrink: 0 !important; /* Ne smanjuj tab */
+  min-width: fit-content !important;
+  white-space: nowrap !important; /* Ne wrapuj tekst */
+  margin-right: 0.5rem !important;
+}
+
+/* Debug - osigurava da su svi tabovi vidljivi */
+div[style*="tabs"] {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
