@@ -1,0 +1,26 @@
+{
+  "name": "swagger-openapi-demo",
+  "version": "1.0.0",
+  "description": "Express server sa Swagger/OpenAPI dokumentacijom",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "swagger",
+    "openapi",
+    "express",
+    "api-documentation"
+  ],
+  "author": "Edin",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  }
+}
