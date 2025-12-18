@@ -1,0 +1,30 @@
+{
+  "name": "index-writing-best-practices",
+  "version": "1.0.0",
+  "description": "Pisanje indeksa u kodu - Best Practices",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "check:indexes": "node src/scripts/checkIndexes.js",
+    "sync:indexes": "node src/scripts/syncIndexes.js",
+    "migrate": "node src/scripts/migrations/runMigrations.js up",
+    "migrate:down": "node src/scripts/migrations/runMigrations.js down",
+    "migrate:status": "node src/scripts/migrations/runMigrations.js status"
+  },
+  "keywords": [
+    "mongodb",
+    "indexes",
+    "mongoose",
+    "best-practices",
+    "migrations"
+  ],
+  "author": "Edin",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0"
+  }
+}
