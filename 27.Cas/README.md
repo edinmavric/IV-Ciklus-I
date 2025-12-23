@@ -1,0 +1,1 @@
+Pregled i komentar o projektima i daljem nastavku ciklusa.
