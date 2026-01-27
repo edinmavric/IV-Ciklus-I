@@ -1,0 +1,238 @@
+/* ============================================
+   STILOVI ZA POCETNU STRANICU
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero sekcija */
+.hero {
+  text-align: center;
+  padding: 4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 4rem;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, #00d4ff 0%, #00b8e6 50%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.loggedIn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.welcomeText {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+}
+
+.welcomeText span {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, #00d4ff 0%, #00b8e6 100%);
+  color: #1a1a2e;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+}
+
+.secondaryBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e0e0e0;
+}
+
+.secondaryBtn:hover {
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+/* Features sekcija */
+.features {
+  margin-bottom: 4rem;
+}
+
+.features h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.featureCard {
+  background: linear-gradient(145deg, #1e1e2e 0%, #252540 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.featureCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #00d4ff;
+}
+
+.featureCard p {
+  color: #888;
+  line-height: 1.6;
+}
+
+/* Demo sekcija */
+.demoSection {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.demoSection h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.demoSection > p {
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.credentialsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.credentialCard {
+  background: linear-gradient(145deg, #1e1e2e 0%, #252540 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+.credentialCard h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #00d4ff;
+}
+
+.credentialInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.credentialInfo span {
+  color: #888;
+}
+
+.credentialInfo code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  color: #00d4ff;
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.credentialNote {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Struktura sekcija */
+.structureSection {
+  margin-bottom: 4rem;
+}
+
+.structureSection h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.codeBlock {
+  background: linear-gradient(145deg, #1e1e2e 0%, #252540 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  overflow-x: auto;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    text-align: center;
+  }
+}
